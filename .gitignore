@@ -1,0 +1,6 @@
+site/*
+*.swp
+data/*
+.sass-cache
+dist
+temp/

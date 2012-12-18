@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+<style>
+
+.centerit {
+  text-align: center;
+}
+.rightit {
+  text-align: right;
+}
+
+.js-charts {
+  display: none;
+}
+
+/*
+  these rules from d3js.org
+*/
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+.q0-9 { fill:rgb(247,251,255); }
+.q1-9 { fill:rgb(222,235,247); }
+.q2-9 { fill:rgb(198,219,239); }
+.q3-9 { fill:rgb(158,202,225); }
+.q4-9 { fill:rgb(107,174,214); }
+.q5-9 { fill:rgb(66,146,198); }
+.q6-9 { fill:rgb(33,113,181); }
+.q7-9 { fill:rgb(8,81,156); }
+.q8-9 { fill:rgb(8,48,107); }
+
+</style>
+        
+        <link rel="stylesheet" href="styles/main.css">
+        <script src="scripts/vendor/modernizr.min.js"></script>
+    </head>
+    <body>
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div class="alert alert-block">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>Warning!</h4>
+                    This is an experiment for a class. Its unfinished. Some of the data is wrong and its a little broken. You've been warned...
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12">
+                <h1>Census Map</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span7">
+                <form class="form-inline" id="js-years">
+                    <input id="js-plot-start-year" type="text" class="input-small" placeholder="2000">
+                    <input id="js-plot-end-year" type="text" class="input-small" placeholder="2011">
+                    <button type="submit" class="btn">Plot</button>
+                </form>
+            </div>
+            <div class="span5">
+                <form id="js-search" class="form-search pull-right">
+                    <input id="js-cty-finder" type="text" class="search-query" placeholder="Enter a county">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12" id="map">
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12">
+              <h3 id="js-county-name">Click a county for more info...</h3>
+            </div>
+        </div>
+        <div class="row js-charts">
+            <div class="span3">
+                <h1 id="js-old-pop">346,545</h1>
+                <p><em id="js-old-year">2000 population</em></p>
+            </div>
+            <div class="span6 centerit">
+                <h1 id="js-pct-change">+1.5%</h1>
+                <p><em>percent change</em></p>
+            </div>
+            <div class="span3 rightit">
+                <h1 id="js-new-pop">346,545</h1>
+                <p><em id="js-new-year">2010 population</em></p>
+            </div>
+        </div>
+        <div class="row js-charts">
+            <!--<div class="span3">
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label" for="inputEmail">Email</label>
+                        <div class="controls">
+                            <input type="text" id="inputEmail" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputPassword">Password</label>
+                        <div class="controls">
+                            <input type="password" id="inputPassword" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn">Plot!</button>
+                        </div>
+                    </div>
+                </form>
+            </div>-->
+            <div class="span12" id="js-pop-chart">
+            </div>
+        </div>
+    </div>
+
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="scripts/vendor/jquery.min.js"><\/script>')</script>
+        
+        
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    
+    <!-- build:js scripts/plugins.js -->
+    <script src="scripts/vendor/bootstrap/bootstrap-affix.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-alert.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-dropdown.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-tooltip.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-modal.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-transition.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-button.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-popover.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-typeahead.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-carousel.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-scrollspy.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-collapse.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-tab.js"></script>
+    <script src="scripts/vendor/d3/d3.v3.js"></script>
+    <script src="scripts/vendor/d3/queue.v1.js"></script>
+    <script src="scripts/vendor/d3/topojson.v0.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/application.js -->
+    <script src="scripts/data/key.js"></script>
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+</body>
+</html>
